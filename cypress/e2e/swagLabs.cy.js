@@ -83,21 +83,21 @@ describe('Swag Labs - Testes End-to-End', () => {
 
     cy.get('[data-test="item-4-title-link"]')
       .click()
-      
+
     cy.get('[data-test="add-to-cart"]')
       .click()
 
     cy.get('[data-test="remove"]')
       .should('be.visible')
 
-     cy.get('[data-test="remove"]')
+    cy.get('[data-test="remove"]')
       .click()
-      
-     cy.get('[data-test="add-to-cart"]')
-        .should('be.visible')
+
+    cy.get('[data-test="add-to-cart"]')
+      .should('be.visible')
   })
 
-  it('Valida badge do carrinho com quantidade correta',()=>{
+  it('Valida badge do carrinho com quantidade correta', () => {
     cy.LoginUsingStandard_userUsername()
 
     cy.get('[data-test="add-to-cart-sauce-labs-backpack"]')
@@ -110,23 +110,23 @@ describe('Swag Labs - Testes End-to-End', () => {
       .click()
 
     cy.get('[data-test="shopping-cart-badge"]')
-      .should('have.text','3')
+      .should('have.text', '3')
   })
 
-  it('Finaliza compra com dados corretos',()=>{
+  it('Finaliza compra com dados corretos', () => {
     cy.LoginUsingStandard_userUsername()
 
     cy.get('[data-test="add-to-cart-sauce-labs-bike-light"]')
-        .click()
+      .click()
 
     cy.get('[data-test="shopping-cart-link"]')
       .click()
 
     cy.url()
-      .should('include','cart.html')
-    
+      .should('include', 'cart.html')
+
     cy.get('[data-test="inventory-item-name"]')
-      .should('have.text','Sauce Labs Bike Light')
+      .should('have.text', 'Sauce Labs Bike Light')
 
 
     cy.get('[data-test="checkout"]')
@@ -145,18 +145,60 @@ describe('Swag Labs - Testes End-to-End', () => {
       .click()
 
     cy.url()
-      .should('include','checkout-step-two.html')
+      .should('include', 'checkout-step-two.html')
 
     cy.get('[data-test="finish"]')
       .click()
 
     cy.url()
-      .should('include','checkout-complete.html')
+      .should('include', 'checkout-complete.html')
 
     cy.get('[data-test="complete-header"]')
       .should('be.visible')
   })
 
-  
+  it.only('Permite finalizar compra sem produto no carrinho', () => {
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="shopping-cart-badge"]')
+      .should('not.exist')
+
+    cy.get('[data-test="shopping-cart-link"]')
+      .click()
+
+    cy.url()
+      .should('include', 'cart.html')
+
+
+    cy.get('[data-test="checkout"]')
+      .click()
+
+    cy.get('[data-test="firstName"]')
+      .type('Maria')
+
+    cy.get('[data-test="lastName"]')
+      .type('Worode')
+
+    cy.get('[data-test="postalCode"]')
+      .type('96853420')
+
+    cy.get('[data-test="continue"]')
+      .click()
+
+    cy.url()
+      .should('include', 'checkout-step-two.html')
+
+    cy.get('[data-test="finish"]')
+      .click()
+
+    cy.url()
+      .should('include', 'checkout-complete.html')
+
+    cy.get('[data-test="complete-header"]')
+      .should('have.text', 'Thank you for your order!')
+
+    
+  })
+
 
 })
