@@ -113,7 +113,7 @@ describe('Swag Labs - Testes End-to-End', () => {
       .should('have.text','3')
   })
 
-  it.only('Finaliza compra com dados corretos',()=>{
+  it('Finaliza compra com dados corretos',()=>{
     cy.LoginUsingStandard_userUsername()
 
     cy.get('[data-test="add-to-cart-sauce-labs-bike-light"]')
@@ -150,8 +150,13 @@ describe('Swag Labs - Testes End-to-End', () => {
     cy.get('[data-test="finish"]')
       .click()
 
+    cy.url()
+      .should('include','checkout-complete.html')
+
     cy.get('[data-test="complete-header"]')
       .should('be.visible')
   })
+
+  
 
 })
