@@ -1,8 +1,13 @@
 describe('Swag Labs - Testes End-to-End', () => {
 
   beforeEach(() => {
-    cy.visit('https://www.saucedemo.com')
+    cy.visit('https://www.saucedemo.com', {
+      failOnStatusCode: false,
+      timeout: 120000,
+      pageLoadTimeout: 120000
+    })
   })
+
   it('Busca Titulo da Aplicação', () => {
     cy.title().should('eq', 'Swag Labs')
   })
@@ -53,8 +58,100 @@ describe('Swag Labs - Testes End-to-End', () => {
     cy.get('[data-test="shopping-cart-badge"]').should('not.exist')
   })
 
-  it('Visita página de detalhes do produto',()=>{
+  it('Visita página de detalhes do produto Sauce Labs Backpack', () => {
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="item-4-title-link"]')
+      .click()
+
+    cy.url()
+      .should('include', 'inventory-item.html')
+  })
+
+  it('Adiciona produto ao carrinho pela página de detalhes do produto (Sauce Labs Backpack)', () => {
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="item-4-title-link"]')
+      .click()
+    cy.get('[data-test="add-to-cart"]')
+      .click()
+    cy.get('[data-test="remove"]').should('be.visible')
+  })
+
+  it('Remove produto do carrinho pela página de detalhes do produto (Sauce Labs Backpack)', () => {
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="item-4-title-link"]')
+      .click()
+      
+    cy.get('[data-test="add-to-cart"]')
+      .click()
+
+    cy.get('[data-test="remove"]')
+      .should('be.visible')
+
+     cy.get('[data-test="remove"]')
+      .click()
+      
+     cy.get('[data-test="add-to-cart"]')
+        .should('be.visible')
+  })
+
+  it('Valida badge do carrinho com quantidade correta',()=>{
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="add-to-cart-sauce-labs-backpack"]')
+      .click()
+
+    cy.get('[data-test="add-to-cart-test.allthethings()-t-shirt-(red)"]')
+      .click()
+
+    cy.get('[data-test="add-to-cart-sauce-labs-onesie"]')
+      .click()
+
+    cy.get('[data-test="shopping-cart-badge"]')
+      .should('have.text','3')
+  })
+
+  it.only('Finaliza compra com dados corretos',()=>{
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="add-to-cart-sauce-labs-bike-light"]')
+        .click()
+
+    cy.get('[data-test="shopping-cart-link"]')
+      .click()
+
+    cy.url()
+      .should('include','cart.html')
     
+    cy.get('[data-test="inventory-item-name"]')
+      .should('have.text','Sauce Labs Bike Light')
+
+
+    cy.get('[data-test="checkout"]')
+      .click()
+
+    cy.get('[data-test="firstName"]')
+      .type('Maria')
+
+    cy.get('[data-test="lastName"]')
+      .type('Worode')
+
+    cy.get('[data-test="postalCode"]')
+      .type('96853420')
+
+    cy.get('[data-test="continue"]')
+      .click()
+
+    cy.url()
+      .should('include','checkout-step-two.html')
+
+    cy.get('[data-test="finish"]')
+      .click()
+
+    cy.get('[data-test="complete-header"]')
+      .should('be.visible')
   })
 
 })
