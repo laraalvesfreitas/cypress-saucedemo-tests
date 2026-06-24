@@ -157,7 +157,7 @@ describe('Swag Labs - Testes End-to-End', () => {
       .should('be.visible')
   })
 
-  it.only('Permite finalizar compra sem produto no carrinho', () => {
+  it('Permite finalizar compra sem produto no carrinho', () => {
     cy.LoginUsingStandard_userUsername()
 
     cy.get('[data-test="shopping-cart-badge"]')
@@ -195,10 +195,23 @@ describe('Swag Labs - Testes End-to-End', () => {
       .should('include', 'checkout-complete.html')
 
     cy.get('[data-test="complete-header"]')
-      .should('have.text', 'Thank you for your order!')
-
-    
+      .should('have.text', 'Thank you for your order!')   
   })
 
+  it('Realiza logout',() =>{
+    cy.LoginUsingStandard_userUsername()
+    cy.get('#react-burger-menu-btn').click()
+
+    cy.get('[data-test="logout-sidebar-link"]').click()
+
+    cy.get('[data-test="username"]')
+      .should('be.visible')
+
+    cy.get('[data-test="password"]')
+      .should('be.visible')
+  
+  })
+
+  
 
 })
