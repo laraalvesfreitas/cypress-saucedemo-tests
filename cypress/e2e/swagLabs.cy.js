@@ -345,4 +345,22 @@ describe('Swag Labs - Testes End-to-End', () => {
 
 
   })
+
+
+  it('Valida abertura do carrinho', () => {
+  cy.LoginUsingStandard_userUsername()
+
+  cy.get('[data-test="add-to-cart-sauce-labs-backpack"]')
+    .click()
+
+  cy.get('[data-test="shopping-cart-link"]')
+    .click()
+
+  cy.url()
+    .should('include', '/cart.html')
+
+  cy.get('[data-test="inventory-item-name"]')
+    .should('be.visible')
+    .and('contain', 'Sauce Labs Backpack')
+})
 })
