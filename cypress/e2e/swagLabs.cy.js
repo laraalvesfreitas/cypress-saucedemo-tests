@@ -195,10 +195,10 @@ describe('Swag Labs - Testes End-to-End', () => {
       .should('include', 'checkout-complete.html')
 
     cy.get('[data-test="complete-header"]')
-      .should('have.text', 'Thank you for your order!')   
+      .should('have.text', 'Thank you for your order!')
   })
 
-  it('Realiza logout',() =>{
+  it('Realiza logout', () => {
     cy.LoginUsingStandard_userUsername()
     cy.get('#react-burger-menu-btn').click()
 
@@ -209,10 +209,10 @@ describe('Swag Labs - Testes End-to-End', () => {
 
     cy.get('[data-test="password"]')
       .should('be.visible')
-  
+
   })
 
-  it('Válida botão About',()=>{
+  it('Valida botão About', () => {
     cy.LoginUsingStandard_userUsername()
 
     cy.get('#react-burger-menu-btn')
@@ -220,7 +220,46 @@ describe('Swag Labs - Testes End-to-End', () => {
 
     cy.get('[data-test="about-sidebar-link"]')
       .should('have.attr', 'href')
-      .and('eq','https://saucelabs.com/')
-   })
+      .and('eq', 'https://saucelabs.com/')
+  })
+
+  it.only('Valida persistência do carrinho', () => {
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="add-to-cart-sauce-labs-backpack"]')
+      .click()
+
+    cy.get('[data-test="shopping-cart-badge"]')
+      .should('have.text', '1')
+
+    cy.get('[data-test="shopping-cart-link"]')
+      .click()
+
+    cy.get('[data-test="inventory-item-name"]')
+      .should('contain', 'Sauce Labs Backpack')
+
+    cy.get('#react-burger-menu-btn')
+      .click()
+
+    cy.get('[data-test="logout-sidebar-link"]')
+      .click()
+
+    cy.get('[data-test="username"]')
+      .should('be.visible')
+
+    cy.get('[data-test="password"]')
+      .should('be.visible')
+
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="shopping-cart-badge"]')
+      .should('have.text', '1')
+
+    cy.get('[data-test="shopping-cart-link"]')
+      .click()
+
+    cy.get('[data-test="inventory-item-name"]')
+      .should('contain', 'Sauce Labs Backpack')
+  })
 
 })
