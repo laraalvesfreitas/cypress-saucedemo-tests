@@ -212,6 +212,15 @@ describe('Swag Labs - Testes End-to-End', () => {
   
   })
 
-  
+  it('Válida botão About',()=>{
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('#react-burger-menu-btn')
+      .click()
+
+    cy.get('[data-test="about-sidebar-link"]')
+      .should('have.attr', 'href')
+      .and('eq','https://saucelabs.com/')
+   })
 
 })
