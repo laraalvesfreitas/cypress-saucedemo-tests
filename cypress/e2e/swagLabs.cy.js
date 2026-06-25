@@ -223,7 +223,7 @@ describe('Swag Labs - Testes End-to-End', () => {
       .and('eq', 'https://saucelabs.com/')
   })
 
-  it.only('Valida persistência do carrinho', () => {
+  it('Valida persistência do carrinho', () => {
     cy.LoginUsingStandard_userUsername()
 
     cy.get('[data-test="add-to-cart-sauce-labs-backpack"]')
@@ -262,4 +262,35 @@ describe('Swag Labs - Testes End-to-End', () => {
       .should('contain', 'Sauce Labs Backpack')
   })
 
+  it('Deve ordenar produtos do maior para menor preço', () => {
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="product-sort-container"]')
+      .select('Price (high to low)')
+
+    cy.get('[data-test="product-sort-container"]')
+      .should('have.value', 'hilo')
+  })
+
+  it('Deve ordenar produtos do menor para maior preço', () => {
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="product-sort-container"]')
+      .select('Price (low to high)')
+
+    cy.get('[data-test="product-sort-container"]')
+      .should('have.value', 'lohi')
+
+  })
+
+  it.only('Deve ordenar produtos de Z para A', () => {
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="product-sort-container"]')
+      .select('Name (Z to A)')
+
+    cy.get('[data-test="product-sort-container"]')
+      .should('have.value', 'za')
+
+  })
 })
