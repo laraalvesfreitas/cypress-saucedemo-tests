@@ -283,7 +283,7 @@ describe('Swag Labs - Testes End-to-End', () => {
 
   })
 
-  it.only('Deve ordenar produtos de Z para A', () => {
+  it('Deve ordenar produtos de Z para A', () => {
     cy.LoginUsingStandard_userUsername()
 
     cy.get('[data-test="product-sort-container"]')
@@ -291,6 +291,58 @@ describe('Swag Labs - Testes End-to-End', () => {
 
     cy.get('[data-test="product-sort-container"]')
       .should('have.value', 'za')
+
+  })
+
+  it('Valida mensagem de erro ao finalizar compra sem preencher dados', () => {
+    cy.LoginUsingStandard_userUsername()
+
+    cy.get('[data-test="add-to-cart-test.allthethings()-t-shirt-(red)"]')
+      .click()
+
+    cy.get('[data-test="shopping-cart-link"]')
+      .click()
+
+    cy.url()
+      .should('include', '/cart.html')
+
+    cy.get('[data-test="inventory-item-name"]')
+      .should('be.visible')
+
+    cy.get('[data-test="checkout"]')
+      .click()
+
+    cy.url()
+      .should('include', 'checkout-step-one')
+
+    cy.get('[data-test="continue"]')
+      .click()
+
+    cy.get('[data-test="error"]')
+      .should('be.visible')
+      .and('contain', 'Error: First Name is required')
+
+    cy.get('[data-test="firstName"]')
+      .type('Marina')
+
+    cy.get('[data-test="continue"]')
+      .click()
+
+    cy.get('[data-test="error"]')
+      .should('be.visible')
+      .and('contain', 'Error: Last Name is required')
+
+    cy.get('[data-test="lastName"]')
+      .type('Cryime')
+
+    cy.get('[data-test="continue"]')
+      .click()
+
+
+    cy.get('[data-test="error"]')
+      .should('be.visible')
+      .and('contain', 'Error: Postal Code is required')
+
 
   })
 })
