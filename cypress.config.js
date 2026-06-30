@@ -8,4 +8,5 @@ module.exports = defineConfig({
     pageLoadTimeout: 120000,
     chromeWebSecurity: false,
   },
+    projectId: "k841jm",
 })
